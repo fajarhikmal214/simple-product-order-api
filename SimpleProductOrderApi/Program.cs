@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using SimpleProductOrderApi.Data;
 using SimpleProductOrderApi.Extensions;
+using SimpleProductOrderApi.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddOpenApi();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => {
+    options.Filters.Add<HttpResponseExceptionFilter>();
+});
 
 // Add EF Core with MSSQL
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("DefaultConnection not found.");;
