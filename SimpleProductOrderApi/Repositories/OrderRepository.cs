@@ -1,6 +1,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SimpleProductOrderApi.Data;
+using SimpleProductOrderApi.Models;
 
 namespace SimpleProductOrderApi.Repositories
 {
@@ -18,6 +19,15 @@ namespace SimpleProductOrderApi.Repositories
                 "EXEC sp_CreateOrder @CustomerName, @CustomerEmail, @Items",
                 customerNameParam, customerEmailParam, itemsParam
             );
+        }
+
+        public async Task<Order> GetByIdAsync(int id)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.Id == id);
+                
+            return order;
         }
     }
 }

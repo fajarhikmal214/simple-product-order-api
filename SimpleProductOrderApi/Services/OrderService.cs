@@ -15,5 +15,25 @@ namespace SimpleProductOrderApi.Services
 
             await _repository.CreateOrderAsync(customerName, customerEmail, itemsJson);
         }
+
+        public async Task<OrderDetailResponse> GetByIdAsync(int id)
+        {
+            var order = await _repository.GetByIdAsync(id);
+            if (order == null) throw new KeyNotFoundException("Order not found");            
+
+            return new OrderDetailResponse
+            {
+                OrderId = order.Id,
+                CustomerName = order.CustomerName,
+                CustomerEmail = order.CustomerEmail,
+                OrderedAt = order.CreatedAt,
+                Items = order.OrderItems.Select(i => new OrderItemDto
+                {
+                    ProductName = i.ProductName,
+                    ProductPrice = i.ProductPrice,
+                    Quantity = i.Quantity
+                }).ToList()
+            };
+        }
     }
 }

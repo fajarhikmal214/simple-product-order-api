@@ -31,5 +31,13 @@ namespace SimpleProductOrderApi.Controllers
                 throw new ApplicationException("Failed to create order. ", ex);
             }
         }
+
+        [Authorize, HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderDetail(int id)
+        {
+            var order = await _service.GetByIdAsync(id);
+
+            return Ok(order);
+        }
     }
 }
