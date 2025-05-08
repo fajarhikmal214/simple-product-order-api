@@ -1,5 +1,3 @@
-using SimpleProductOrderApi.Models;
-
 namespace SimpleProductOrderApi.Models
 {
     public class Order
