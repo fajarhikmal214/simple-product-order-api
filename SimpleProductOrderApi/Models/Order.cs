@@ -7,7 +7,6 @@ namespace SimpleProductOrderApi.Models
         public int Id { get; set; }
         public string? CustomerName { get; set; }
         public string? CustomerEmail { get; set; }
-        public string? CustomerPhone { get; set; }
     
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
