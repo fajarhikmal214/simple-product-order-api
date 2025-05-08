@@ -47,4 +47,22 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+// Apply pending migrations
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        context.Database.Migrate();
+        
+        Console.WriteLine("Migration success!!!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Migration failed: {ex.Message}");
+        throw;
+    }
+}
+
 app.Run();
