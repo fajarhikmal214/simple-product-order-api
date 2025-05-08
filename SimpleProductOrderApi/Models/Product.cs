@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace SimpleProductOrderApi.Models
 {
     public class Product
@@ -9,6 +11,8 @@ namespace SimpleProductOrderApi.Models
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        [JsonIgnore]
         public DateTime? DeletedAt { get; set; }
     }
 }
