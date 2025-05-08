@@ -1,4 +1,6 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SimpleProductOrderApi.Data;
 using SimpleProductOrderApi.Extensions;
 using SimpleProductOrderApi.Filters;
@@ -15,6 +17,21 @@ builder.Services.AddControllers(options => {
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("DefaultConnection not found.");;
 builder.Services.AddDbContext<AppDbContext> (options => options.UseSqlServer(connectionString));
 
+// Add JWT Authentication
+builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options => {
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+        )
+    };
+});
+
 builder.Services.AddApplicationServices();
 
 var app = builder.Build();
@@ -26,6 +43,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
