@@ -84,3 +84,20 @@ A simple RESTful Web API built with .NET Core 9, utilizing Entity Framework Core
    ```bash
    docker-compose down
    ```
+
+### Database Setup (if you run locally)
+
+If you're using SQL Server, ensure that the SQL Server instance is running. You can either:
+
+1. Run SQL Server in Docker (optional):
+
+   ```bash
+   docker pull mcr.microsoft.com/mssql/server
+   docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=YourPassword' -p 1433:1433 -d mcr.microsoft.com/mssql/server
+   ```
+   
+2. Apply migrations (if needed) to create the database schema:
+
+   ```bash
+   dotnet ef database update
+   ```
