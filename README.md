@@ -23,8 +23,8 @@ A simple RESTful Web API built with .NET Core 9, utilizing Entity Framework Core
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/order-management-api.git
-   cd order-management-api
+   git clone https://github.com/fajarhikmal214/simple-product-order-api.git
+   cd simple-product-order-api
    ```
 
 2. **Make Sure `appsettings.json` file exists:**
