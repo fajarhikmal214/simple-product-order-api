@@ -5,10 +5,9 @@ A simple RESTful Web API built with .NET Core 9, utilizing Entity Framework Core
 ## 🛠️ Tech Stack
 
 - **Backend**: C# with ASP.NET Core 9
-- **Database**: SQL Server
+- **Database**: SQL Server 2022
 - **ORM**: Entity Framework Core
 - **Authentication**: JWT Bearer Tokens
-- **Validation**: FluentValidation
 
 ## 🚀 Getting Started
 
