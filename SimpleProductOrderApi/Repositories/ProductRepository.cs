@@ -36,7 +36,9 @@ namespace SimpleProductOrderApi.Repositories
 
         public async Task DeleteAsync(Product product)
         {
-            _context.Products.Remove(product);
+            product.DeletedAt = DateTime.UtcNow;
+            
+            _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }
     }
