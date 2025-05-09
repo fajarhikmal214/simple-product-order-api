@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SimpleProductOrderApi.Models;
 using SimpleProductOrderApi.Services;
+using SimpleProductOrderApi.DTOs;
 
 namespace SimpleProductOrderApi.Controllers
 {
@@ -27,21 +28,21 @@ namespace SimpleProductOrderApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Product product)
+        public async Task<IActionResult> Create([FromBody] CreateProductRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(new { status = "error", message = "Invalid payload" });
             }
 
-            var created = await _service.CreateAsync(product);
+            var created = await _service.CreateAsync(request);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, new { status = "success", message = "Product created successfully", data = created });
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Product product)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateProductRequest request)
         {
-            await _service.UpdateAsync(id, product);
+            await _service.UpdateAsync(id, request);
             return Ok(new { status = "success", message = "Product updated successfully" });
         }
 

@@ -1,6 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using SimpleProductOrderApi.Models;
 using SimpleProductOrderApi.Repositories;
+using SimpleProductOrderApi.DTOs;
 
 namespace SimpleProductOrderApi.Services
 {
@@ -22,20 +22,27 @@ namespace SimpleProductOrderApi.Services
             return product;
         }
 
-        public async Task<Product> CreateAsync(Product product) {
+        public async Task<Product> CreateAsync(CreateProductRequest request) {
+            var product = new Product
+            {
+                Name = request.Name,
+                Description = request.Description,
+                Price = request.Price
+            };
+
             var result = await _repository.CreateAsync(product);
 
             return result;
         }
 
-        public async Task UpdateAsync(int id, Product product)
+        public async Task UpdateAsync(int id, UpdateProductRequest request)
         {
             var existing = await _repository.GetByIdAsync(id);
             if (existing == null) throw new KeyNotFoundException("Product not found");
 
-            existing.Name = product.Name;
-            existing.Description = product.Description;
-            existing.Price = product.Price;
+            existing.Name = request.Name;
+            existing.Description = request.Description;
+            existing.Price = request.Price;
             existing.UpdatedAt = DateTime.UtcNow;
 
             await _repository.UpdateAsync(existing);
