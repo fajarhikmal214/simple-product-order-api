@@ -24,7 +24,10 @@ namespace SimpleProductOrderApi.Controllers
 
                 await _service.CreateOrderAsync(name, email, items);
 
-                return Ok(new { message = "Order created successfully." });
+                return Ok(new {
+                    status = "success",
+                    message = "Order created successfully."
+                });
             }
             catch (Exception ex)
             {
@@ -37,7 +40,12 @@ namespace SimpleProductOrderApi.Controllers
         {
             var order = await _service.GetByIdAsync(id);
 
-            return Ok(order);
+            return Ok(new
+            {
+                status = "success",
+                message = "Order retrieved successfully.",
+                data = order
+            });
         }
     }
 }

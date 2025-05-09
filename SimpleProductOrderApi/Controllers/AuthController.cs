@@ -15,7 +15,17 @@ namespace SimpleProductOrderApi.Controllers
         {
             var token = _tokenService.CreateToken(request.Name, request.Email);
 
-            return Ok(new { token });
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized(new { status = "error", message = "Invalid credentials" });
+            }
+
+            return Ok(new
+            {
+                status = "success",
+                message = "Login successful.",
+                data = new { token }
+            });
         }
     }
 }

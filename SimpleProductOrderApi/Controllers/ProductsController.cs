@@ -14,35 +14,42 @@ namespace SimpleProductOrderApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             var products = await _service.GetAllAsync();
-            return Ok(products);
+
+            return Ok(new { status = "success", message = "Products fetched successfully", data = products });
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var product = await _service.GetByIdAsync(id);
-            return Ok(product);
+
+            return Ok(new { status = "success", message = "Product fetched successfully", data = product });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Create([FromBody] Product product)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { status = "error", message = "Invalid payload" });
+            }
+
             var created = await _service.CreateAsync(product);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, new { status = "success", message = "Product created successfully", data = created });
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Product product)
         {
             await _service.UpdateAsync(id, product);
-            return NoContent();
+            return Ok(new { status = "success", message = "Product updated successfully" });
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);
-            return NoContent();
+            return Ok(new { status = "success", message = "Product deleted successfully" });
         }
     }
 }
