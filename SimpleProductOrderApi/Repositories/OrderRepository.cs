@@ -9,16 +9,27 @@ namespace SimpleProductOrderApi.Repositories
     {
         private readonly AppDbContext _context = context;
         
-        public async Task CreateOrderAsync(string? customerName, string? customerEmail, string itemsJson)
+        public async Task<string> CreateOrderAsync(string? customerName, string? customerEmail, string itemsJson)
         {
             var customerNameParam = new SqlParameter("@CustomerName", customerName);
             var customerEmailParam = new SqlParameter("@CustomerEmail", customerEmail);
             var itemsParam = new SqlParameter("@Items", itemsJson);
 
+            var resultMessageParam = new SqlParameter
+            {
+                ParameterName = "@ResultMessage",
+                SqlDbType = System.Data.SqlDbType.NVarChar,
+                Size = 4000,
+                Direction = System.Data.ParameterDirection.Output
+            };
+
             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC sp_CreateOrder @CustomerName, @CustomerEmail, @Items",
-                customerNameParam, customerEmailParam, itemsParam
+                "EXEC sp_CreateOrder @CustomerName, @CustomerEmail, @Items, @ResultMessage OUTPUT",
+                customerNameParam, customerEmailParam, itemsParam, resultMessageParam
             );
+
+            var resultMessage = resultMessageParam.Value?.ToString();
+            return resultMessage;
         }
 
         public async Task<Order> GetByIdAsync(int id)

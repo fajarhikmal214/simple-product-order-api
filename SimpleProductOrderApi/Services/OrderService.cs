@@ -13,7 +13,10 @@ namespace SimpleProductOrderApi.Services
             // Serialize order items to JSON
             var itemsJson = JsonSerializer.Serialize(request.OrderItems);
 
-            await _repository.CreateOrderAsync(customerName, customerEmail, itemsJson);
+            var resultMessage = await _repository.CreateOrderAsync(customerName, customerEmail, itemsJson);
+            if (!resultMessage.StartsWith("Success")) {
+                throw new InvalidOperationException(resultMessage);
+            }
         }
 
         public async Task<OrderDetailResponse> GetByIdAsync(int id)
