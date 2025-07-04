@@ -11,7 +11,7 @@ namespace SimpleProductOrderApi.Repositories
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             var products = await _context.Products.ToListAsync();
-            return products; 
+            return products;
         }
 
         public async Task<Product> GetByIdAsync(int id)
@@ -37,7 +37,7 @@ namespace SimpleProductOrderApi.Repositories
         public async Task DeleteAsync(Product product)
         {
             product.DeletedAt = DateTime.UtcNow;
-            
+
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }

@@ -3,10 +3,13 @@ services:
   api:
     build:
       context: .
-      dockerfile: Docker/Dockerfile
+      dockerfile: Docker/Dockerfile.local
     ports:
       - "5000:5000"
+    volumes:
+      - .:/app
     environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=db,1433;Database=simple_product_order_db;User Id=sa;Password=YourStrong@Password;Encrypt=False
     depends_on:

@@ -8,7 +8,8 @@ namespace SimpleProductOrderApi.Services
     {
         private readonly ProductRepository _repository = repository;
 
-        public async Task<IEnumerable<Product>> GetAllAsync() {
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
             var products = await _repository.GetAllAsync();
 
             return products;
@@ -17,12 +18,13 @@ namespace SimpleProductOrderApi.Services
         public async Task<Product> GetByIdAsync(int id)
         {
             var product = await _repository.GetByIdAsync(id);
-            if (product == null) throw new KeyNotFoundException("Product not found");            
+            if (product == null) throw new KeyNotFoundException("Product not found");
 
             return product;
         }
 
-        public async Task<Product> CreateAsync(CreateProductRequest request) {
+        public async Task<Product> CreateAsync(CreateProductRequest request)
+        {
             var product = new Product
             {
                 Name = request.Name,

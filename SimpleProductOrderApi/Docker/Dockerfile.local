@@ -1,0 +1,18 @@
+# Stage 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS base
+WORKDIR /app
+EXPOSE 5000
+
+# Set up a user for security best practices
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
+
+# Copy the project file and restore dependencies separately to leverage Docker's layer caching
+COPY --chown=appuser:appuser *.csproj ./
+RUN dotnet restore
+
+# Copy the rest of the application code
+COPY --chown=appuser:appuser . .
+
+# Set the entrypoint to use dotnet watch
+ENTRYPOINT ["dotnet", "watch", "run", "--urls", "http://0.0.0.0:5000"]
