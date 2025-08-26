@@ -20,7 +20,7 @@ namespace SimpleProductOrderApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([Description("The ID of the product to retrieve.")] int id)
+        public async Task<IActionResult> GetById(int id)
         {
             var product = await _service.GetByIdAsync(id);
 
